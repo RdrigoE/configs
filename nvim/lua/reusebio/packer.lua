@@ -6,8 +6,6 @@ vim.cmd.packadd('packer.nvim')
 return require('packer').startup(function(use)
   -- Packer can manage itself
   use 'wbthomason/packer.nvim'
-  use 'christoomey/vim-tmux-navigator'
-  use 'folke/tokyonight.nvim'
   use 'Shatur/neovim-ayu'
   use 'raivivek/vim-snakemake'
   use 'nvim-lua/plenary.nvim'
@@ -23,8 +21,15 @@ return require('packer').startup(function(use)
 	  requires = { {'nvim-lua/plenary.nvim'} }
   }
   use { "ellisonleao/gruvbox.nvim" }
-
-
+  use({
+      "epwalsh/obsidian.nvim",
+      config = function()
+          require("obsidian").setup({
+              dir = "~/reusebio/",
+              -- see below for full list of options 👇
+          })
+      end,
+  })
   use({"nvim-treesitter/nvim-treesitter", run = ":TSUpdate"})
   use("nvim-treesitter/playground")
   use("theprimeagen/harpoon")
