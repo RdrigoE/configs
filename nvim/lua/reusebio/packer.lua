@@ -6,38 +6,68 @@ vim.cmd.packadd('packer.nvim')
 return require('packer').startup(function(use)
   -- Packer can manage itself
   use 'wbthomason/packer.nvim'
-  use 'Shatur/neovim-ayu'
-  use 'raivivek/vim-snakemake'
-  use 'nvim-lua/plenary.nvim'
-  -- Using Packer
-  use 'navarasu/onedark.nvim' 
-  use {
-      'nvim-lualine/lualine.nvim',
-      requires = { 'kyazdani42/nvim-web-devicons', opt = true }
+
+  -- LSP
+  use { -- LSP Configuration & Plugins
+  'neovim/nvim-lspconfig',
+  requires = {
+      -- Automatically install LSPs to stdpath for neovim
+      'williamboman/mason.nvim',
+      'williamboman/mason-lspconfig.nvim',
+
+      -- Useful status updates for LSP
+      'j-hui/fidget.nvim',
+  },
   }
+  -- Autocompletion
+   use { -- Autocompletion
+    'hrsh7th/nvim-cmp',
+    requires = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
+  }
+
+  -- Treesitter
+  use { -- Highlight, edit, and navigate code
+    'nvim-treesitter/nvim-treesitter',
+    run = function()
+      pcall(require('nvim-treesitter.install').update { with_sync = true })
+    end,
+  }
+
+  use { -- Additional text objects via treesitter
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    after = 'nvim-treesitter',
+  }
+
+  use("nvim-treesitter/nvim-treesitter-context");
+
+  --Git
+  use 'tpope/vim-fugitive'
+  use 'tpope/vim-rhubarb'
+  use 'lewis6991/gitsigns.nvim'
+
+  -- Cosmetics
+  use 'navarasu/onedark.nvim' -- Theme inspired by Atom
+  use 'nvim-lualine/lualine.nvim' -- Fancier statusline
+  use 'lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines
+  use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
+  use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
+
+  use 'Shatur/neovim-ayu'
+  use { "catppuccin/nvim", as = "catppuccin" }
+
+  -- snakemake keywords
+  use 'raivivek/vim-snakemake'
+
+  use 'nvim-lua/plenary.nvim'
+
   use {
 	  'nvim-telescope/telescope.nvim', tag = '0.1.0',
 	  -- or                            , branch = '0.1.x',
 	  requires = { {'nvim-lua/plenary.nvim'} }
   }
-  use { "ellisonleao/gruvbox.nvim" }
-  use({
-      "epwalsh/obsidian.nvim",
-      config = function()
-          require("obsidian").setup({
-              dir = "~/reusebio/",
-              -- see below for full list of options 👇
-          })
-      end,
-  })
-  use({"nvim-treesitter/nvim-treesitter", run = ":TSUpdate"})
-  use("nvim-treesitter/playground")
-  use("theprimeagen/harpoon")
-  use("theprimeagen/refactoring.nvim")
-  use("mbbill/undotree")
-  use("tpope/vim-fugitive")
-  use("nvim-treesitter/nvim-treesitter-context");
 
+  use("theprimeagen/harpoon")
+  use("mbbill/undotree")
   use {
 	  'VonHeikemen/lsp-zero.nvim',
 	  branch = 'v1.x',
@@ -61,14 +91,6 @@ return require('packer').startup(function(use)
 	  }
   }
 
-  use {"akinsho/toggleterm.nvim", tag = '*', config = function()
-      require("toggleterm").setup()
-  end}
-  use {
-      'numToStr/Comment.nvim',
-      config = function()
-          require('Comment').setup()
-      end
-  }
+
 end)
 
